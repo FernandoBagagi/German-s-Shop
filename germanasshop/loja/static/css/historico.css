@@ -10,7 +10,6 @@ h2{
 }
 
 hr{
-
     border: 0;
     height: 1px;
     background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
@@ -31,7 +30,7 @@ hr{
 
 .compra_antiga{
     height: auto;
-    width: 100%;
+    width: 90%;
     margin-top: 10px;
     border-radius: 10px;
     background-color: #adadad;
@@ -40,7 +39,7 @@ hr{
 .titular{
     border-radius: 10px 10px 0px 0px;
     height: auto;
-    width: 100%;
+    width: 90%;
     background-color: #FFC8CA;
     display: flex;
 }
@@ -50,7 +49,7 @@ hr{
     
     border-radius: 0px 0px 10px 10px;
     height: auto;
-    width: 100%;
+    width: 90%;
     background-color: #dfdfdf;
 }
 

@@ -14,32 +14,11 @@
     </head>
     <body>
         {% include 'loja/navbar.html' %}
-        <div id="topo"></div>
-        <div class="conteiner_historico">
-            <div class="compra_antiga" >
-                <div class="titular">
-                    <div class="dados_compra"><h1>Data da Compra</h1><h2>31/12/2013</h2></div>
-                    <div class="dados_compra"><h1>Total</h1><h2>R$ 312,13</h2></div>
-                    <div id="n_pedido" class="dados_compra"><h1>Pedido Número</h1><h2>1</h2></div>
-                </div>
-                <div class="lista_produtos">
-                    <div class="produto">
-                        <img src="capa.jpg" alt="">
-                        <a href="">Nome produto</a>
-                    </div>
-                    <hr>
-                    <div class="produto">
-                        <img src="capa.jpg" alt="">
-                        <a href="">Nome produto</a>
-                    </div>
-                </div>
-            </div>
-            <!-- 
             {% for compra in compras%}
             <div class="compra_antiga" >
                 <div class="titular">
                     <div class="dados_compra"><h1>Data da Compra</h1><h2>{{compra.data}}</h2></div>
-                    <div class="dados_compra"><h1>Total</h1><h2>R$ {{compra.titulo}}</h2></div>
+                    <div class="dados_compra"><h1>Total</h1><h2>R$ {{compra.total}}</h2></div>
                     <div id="n_pedido" class="dados_compra"><h1>Pedido Número</h1><h2>{{compra.pk}}</h2></div>
                 </div>
                 <div class="lista_produtos">
@@ -53,9 +32,6 @@
                 </div>
             </div>
             {% endfor %}
-        -->
-
-
         </div>
     </body>
 </html>

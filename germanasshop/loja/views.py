@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, render
 from matplotlib.style import context
-from .models import Carrinho, Favorito, Produto, Reclamacao
+from .models import Carrinho, Compra, CompraProduto, Favorito, Produto, Reclamacao
 from django.contrib.auth.models import User
 
 
@@ -87,6 +87,28 @@ def produto(request, id_produto):
     context['produto'] = produto
     return render(request, 'loja/produto.html', context)
 
+class CompraModel:
+    def __init__(self, total, data, lista_produtos):
+        self.total = total
+        self.data = data
+        self.lista_produtos = lista_produtos
 
 def historico(request):
-    return render(request, 'loja/historico.html')
+    if request.session.get('id_usuario', False):
+         lista_compras = []
+         user = get_object_or_404(User, pk=request.session['id_usuario'])
+         compras = Compra.objects.all()
+         for compra in compras:
+            if compra.id_usuario.username == user.username:
+                CP_list = CompraProduto.objects.all()
+                lista_produtos = []
+                for CP in CP_list:
+                    if CP.id_compra.pk == compra.pk:
+                        produto = get_object_or_404(Produto, pk=CP.id_produto.pk)
+                        lista_produtos.append(produto)
+                c = CompraModel(total= compra.total,data= compra.data, lista_produtos=lista_produtos)
+                lista_compras.append(c)
+
+         context = {"compras":lista_compras}        
+         return render(request, 'loja/historico.html', context=context)
+    return render(request, 'cadastro/login.html')
