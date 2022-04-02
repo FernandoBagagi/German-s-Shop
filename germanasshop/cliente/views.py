@@ -2,7 +2,6 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
-from django.core.mail import send_mail
 from django.conf import settings
 from audioop import reverse
 from django.http import HttpResponseRedirect    
@@ -40,12 +39,3 @@ def login(request):
                 return HttpResponseRedirect('/')
             return render(request, 'cadastro/erro.html')
     return render(request, 'cadastro/login.html')
-
-def recuperar_senha(request):
-    send_mail(
-        'Teste',
-        'ola',
-        settings.EMAIL_HOST_USER,
-        ['1234contasdejogos1234@gmail.com'],
-        fail_silently=False,
-    )
