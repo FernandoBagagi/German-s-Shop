@@ -2,11 +2,7 @@ from audioop import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from matplotlib.style import context
-<<<<<<< HEAD
 from .models import Carrinho, Compra, CompraProduto, Favorito, Produto, Reclamacao
-=======
-from .models import Carrinho, Compra, Favorito, Produto, Reclamacao
->>>>>>> 4f16c1c762a4363e3c1b4a15feb564102086527d
 from django.contrib.auth.models import User
 
 
