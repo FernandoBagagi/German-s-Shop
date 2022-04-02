@@ -9,5 +9,7 @@ urlpatterns = [
     path('cesta/', views.cesta, name='cesta'),
     path('produto/<int:id_produto>/', views.produto, name='produto'),
     path('historico/', views.historico, name='historico'),
+    path('comprar/', views.compras,name='comprar'),
+    path('favoritar/<int:id_produto>', views.favoritar,name='favoritar'),
     path('logout/', views.logout, name='logout'),
 ]

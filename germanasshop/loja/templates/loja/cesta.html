@@ -12,7 +12,9 @@
             Germana's Shop
         </title>
         <script>
-            quantidade = document.getElementsByClassName('quantidade').
+            function irParaHistorico(){
+                window.location.href ="{% url 'loja:comprar' %}"
+            }
             
         </script>
     </head>
@@ -29,7 +31,7 @@
             <h2 style="float: right;margin-right: 78%;">Total:</h2><h3 style="float: right;margin-right: 3%;margin-top: -15%;">R$ 0000,00</h3>
             <div style="margin-top: 30%;margin-left: 3%;margin-right: 3%;text-align: center;">
                 <hr>
-                <button id="comprar">Comprar</button>
+                <button onclick=irParaHistorico() id="comprar">Comprar</button>
                 <h4><u>adicionar mais produtos</u></h4>
             </div>
         </div>

@@ -79,9 +79,9 @@ def cadastro_produto(request,id_produto):
          user = get_object_or_404(User, pk=request.session['id_usuario'])
          C = Carrinho(id_produto=produto, id_usuario = user,quantidade=1)
          C.save()
-         context= {'id_produto':id_produto}
-         return render(request, 'loja/cesta.html')
+         return HttpResponseRedirect('/cesta')
     return render(request,'cadastro/login.html')
+
 
 def produto(request, id_produto):
     produto = get_object_or_404(Produto, pk=id_produto)
@@ -119,3 +119,34 @@ def historico(request):
          context = {"compras":lista_compras}        
          return render(request, 'loja/historico.html', context=context)
     return render(request, 'cadastro/login.html')
+
+
+def compras(request):
+     if request.session.get('id_usuario', False):
+        user = get_object_or_404(User, pk=request.session['id_usuario'])
+        carrinho = Carrinho.objects.all() 
+        lista_produtos = []
+        
+        for items in carrinho:
+            if items.id_usuario.username == user.username:
+                produto_aux = get_object_or_404(Produto, pk=items.id_produto.pk)
+                lista_produtos.append(produto_aux)
+        compra = Compra(id_usuario=user,total = 100000)
+        compra.save()
+        for produto in lista_produtos:
+            compra_produto = CompraProduto(id_produto=produto,id_compra=compra)
+            compra_produto.save()
+        Carrinho.objects.filter(id_usuario=user).delete()
+        return HttpResponseRedirect('/historico')
+     return render(request, 'cadastro/login.html')
+
+
+
+def favoritar(request,id_produto):
+    if request.session.get('id_usuario', False):
+        user = get_object_or_404(User, pk=request.session['id_usuario'])
+        produto = get_object_or_404(Produto, pk=id_produto)
+        favorito = Favorito(id_produto=produto,id_usuario=user)
+        favorito.save()
+    else:   
+        return render(request, 'cadastro/login.html')
