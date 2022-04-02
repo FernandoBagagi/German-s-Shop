@@ -16,7 +16,7 @@
 </head>
 
 <body>
-    <div id="direita">
+    <dic id="coluna">
         <div id="container-form">
             <img id="logo" src="{% static 'img/logo-login.png' %}" alt="">
             <h1 class="titulo">Faça seu login</h1>
@@ -35,10 +35,12 @@
                 </form>
             </div>
             <div>
-                <label class="textinho">Não tem cadastro? <a href="{% url 'cliente:cadastro' %}">Cadastre-se!</a></label><br>
-                <label class="textinho">Deseja voltar para a tela inicial? <a href="{% url 'loja:inicio' %}">Voltar</a> </label>
+                <p class="textinho">Esqueceu a senha? <a href="{% url 'loja:inicio' %}">Recuperar senha</a></p>
+                <p class="textinho">Não tem cadastro? <a href="{% url 'cliente:cadastro' %}">Cadastre-se!</a></p>
+                <p class="textinho">Deseja voltar para a tela inicial? <a href="{% url 'loja:inicio' %}">Voltar</a></p>
             </div>
         </div>
     </div>
 </body>
+
 </html>

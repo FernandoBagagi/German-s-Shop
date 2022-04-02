@@ -21,15 +21,16 @@ def cadastro(request):
         return render(request, 'cadastro/login.html')
     
 def login(request):
-    try:
-        nome = request.POST['nome']
-        senha = request.POST['senha']
-    except (KeyError):
-        return render(request, 'cadastro/login.html')
-    else:
-        user = authenticate(username=nome, password=senha)
-        if user:
-            request.session['id_usuario'] = user.id
-            return render(request, 'cadastro/carregando.html')
-        return render(request, 'cadastro/erro.html')
-        
+    if request.method == 'POST':
+        try:
+            nome = request.POST['nome']
+            senha = request.POST['senha']
+        except (KeyError):
+            return render(request, 'cadastro/erro.html')
+        else:
+            user = authenticate(username=nome, password=senha)
+            if user:
+                request.session['id_usuario'] = user.id
+                return render(request, 'cadastro/carregando.html')
+            return render(request, 'cadastro/erro.html')
+    return render(request, 'cadastro/login.html')

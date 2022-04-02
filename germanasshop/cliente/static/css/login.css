@@ -1,25 +1,26 @@
 body{
     margin: 0px;
-    background-color: #F5F5F5;
-    display: flex;
-    flex-direction: row;
+    background-color: #FFF;
+    display: relative;
     align-items: center;
-    justify-content: center;
-    height: 700px;
+    height: 100%;
+    width: 100%;
 }
 
 #logo{
     height: 80px;
 }
 
-#direita{
-    width: 50%;
+#coluna{
+    position: absolute;
+    top: 10%;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 100%;
+    flex-direction: row;
 }
 
 #container-form{
+    margin: auto;
     height: 450px;
     width: 380px;
     background-color: #FFC8CA;
@@ -93,4 +94,5 @@ body{
     font-style: normal;
     font-weight: 300;
     font-size: 15px;
+    margin: 5px;
 }
