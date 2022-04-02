@@ -1,3 +1,5 @@
+from audioop import reverse
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from matplotlib.style import context
 from .models import Carrinho, Favorito, Produto, Reclamacao
@@ -87,6 +89,10 @@ def produto(request, id_produto):
     context['produto'] = produto
     return render(request, 'loja/produto.html', context)
 
-
 def historico(request):
     return render(request, 'loja/historico.html')
+
+def logout(request):
+    if  request.session.get('id_usuario', False):
+        del request.session['id_usuario']
+    return HttpResponseRedirect('/')
