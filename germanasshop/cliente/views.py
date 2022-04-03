@@ -46,8 +46,8 @@ def login(request):
 def enviar_email(request):
     email = request.POST.getlist('email')
     send_mail(
-            subject='teste',
-            message='ola',
+            subject='Recuperação de senha',
+            message='ola',   #aqui deve ser passado a senha a ser recuperada 
             from_email=settings.EMAIL_HOST_USER,
             recipient_list=email
         )
