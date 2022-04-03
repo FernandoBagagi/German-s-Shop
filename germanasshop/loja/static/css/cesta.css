@@ -24,12 +24,14 @@ h4{
     font-family: 'Dosis', sans-serif;
     color: #4E4E4E;
 }
-#produtos{
-    display: inline-block;
-    position: relative;
-    height: auto;
-    width: 30%;
-    border-width: 10px;
+.produto{
+
+ display:flex;
+ align-items: center;
+}
+#lista_produtos{
+    display:flex;
+    flex-direction: column; 
 }
 #img_produto{
     float: left;
@@ -37,8 +39,14 @@ h4{
     max-width: 120px;
     max-height: auto;
 }
+#header_cesta h2{
+    margin-left: 20px;
+}
+#cestaa{
+    display:flex;
+}
 #nome_produto{
-    margin-top: 17%;
+   
     float: left;
     overflow-wrap: break-word;
     line-break: strict;
@@ -46,16 +54,10 @@ h4{
     font-style: normal;
     font-weight: 500;
     font-size: 24px;
-    width: 70%;
+    width: 33%;
     color: #000000;
 }
-.quantidade{
-    display: inline-block;
-    position: relative;
-    height: auto;
-    width: 15%;
-    border-width: 10px;
-}
+
 input{
     float: left;
     padding: 10px;
@@ -63,52 +65,76 @@ input{
     font-size: 20px;
     text-align: center;
 }
-#contador{
-    display:flex;
-    flex-direction:row;
+
+#quantidade{
+    display: flex;
+    margin-left: 5px;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: row;
+    background-color: white;
+    width:10%;
    
 }
-#quantidade{
-    border-right: none;
-    border-left: none;
-    text-align: center;
-    
-}
-#btn_mais{
-    border-right: none;
-    text-align: center;
-    width: 40px;
+.btn_mais{
+    border: none;
     background-color: white;
     color: #F9595F;
 }
-#btn_mais:hover{
-    background-color: rgb(214, 214, 214);
-}
-#btn_menos{
-    border-left: none;
-    text-align: center;
-    width: 40px;
+.btn_menos{
+    border: none;
     background-color: white;
     color: #F9595F;
 }
-#btn_menos:hover{
+
+.btn_mais:hover, .btn_menos:hover{
     background-color: rgb(214, 214, 214);
 }
 
-#preço{
-    display: inline-block;
- /*   background-color: #9159f9;*/
-    position: relative;
-    height: auto;
-    width: 25%;
+
+.preço{
+    display: flex; 
+    margin-left: 50px;  
+}
+.preço h2{
+    font-size: 2em;
+    font-weight: bold;
+  
 }
 #resumo{
     background-color: #F8F8F8;
-    position: fixed;
-    margin-left: 80%;
-    height: 300px;
-    width: 15%;
     border-radius: 16px;
+    width:20%;
+    border:4px solid #FFC8CA;
+    display:flex;
+    height:300px; 
+    align-items:center; 
+    justify-content:center;
+    flex-direction:column;
+    
+}
+
+#price_container{
+    display:flex; 
+    align-items:center; 
+    justify-content:center;
+    flex-direction:column;
+
+}
+
+#total_price{
+    font-size:2.4em;
+    font-weight: bold;
+}
+.button_container{
+    display:flex;
+    align-items:center; 
+    width:65%;
+    flex-direction:column;
+    margin-bottom:30px;
+}
+.price_container h3{
+    font-size: 36px;
 }
 #comprar{
     margin-top: 15px;
