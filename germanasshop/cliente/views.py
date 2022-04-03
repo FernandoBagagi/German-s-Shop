@@ -5,6 +5,8 @@ from django.contrib.auth import authenticate
 from django.conf import settings
 from audioop import reverse
 from django.http import HttpResponseRedirect    
+from django.core.mail import send_mail
+from django.http import HttpResponse
 def cadastro(request):
     if request.method == 'POST':
         try:
@@ -39,3 +41,18 @@ def login(request):
                 return HttpResponseRedirect('/')
             return render(request, 'cadastro/erro.html')
     return render(request, 'cadastro/login.html')
+
+
+def enviar_email(request):
+    email = request.POST.getlist('email')
+    send_mail(
+            subject='Recuperação de senha',
+            message='ola',   #aqui deve ser passado a senha a ser recuperada 
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=email
+        )
+    return HttpResponseRedirect('/')
+
+
+def recuperar_senha(request):
+    return render(request, 'cadastro/recuperar_senha.html')
