@@ -73,18 +73,29 @@
             quantity+=1;
             $(e.target).parent().find("p").text(quantity)
             preco_produto = parseInt($(e.target).parent().next().children().text().replace('R$',''))
-           
-            console.log("{{lista_produtos}}")
-            $(e.target).parent().next().children().text('R$ '+ novo_preco)
+            preco_produto= preco_produto + preco_produto/(quantity-1)
+            $(e.target).parent().next().children().text('R$ '+ preco_produto)
+            total_price = parseInt($('#total_price').text().replace('R$',''))
+            total_price += preco_produto/(quantity)
+            $('#total_price').text('R$ '+ total_price)
         })
         $(".btn_menos").on('click',(e)=>{
             quantity = parseInt($(e.target).parent().find("p").text())
-            if(!quantity<2)
-                quantity+=1;
+            if(quantity > 1 ){
+                preco_produto = parseInt($(e.target).parent().next().children().text().replace('R$',''))
+                preco_produto= preco_produto - preco_produto/(quantity)
+                $(e.target).parent().next().children().text('R$ '+ preco_produto)
+                total_price = parseInt($('#total_price').text().replace('R$',''))
+                total_price = total_price - preco_produto/(quantity-1)
+                console.log(preco_produto/(quantity-1) )
+                $('#total_price').text('R$ '+ total_price)
+            }
+            
+            if(quantity-1 > 0)
+                quantity-=1
             $(e.target).parent().find("p").text(quantity)
-            price = parseInt($(e.target).parent().next().children().text().replace('R$',''))
-            newPrice -= price;
-            $(e.target).parent().next().children().text('R$ '+ price)
+           
+            
         })
         
         precos = document.getElementsByClassName('preço')
