@@ -18,8 +18,7 @@ def index(request):
     for produto in produtos:
         nomes_secoes = [secao.titulo for secao in secoes]
         if not produto.categoria in nomes_secoes:
-            secoes.append(Secao(titulo=produto.categoria,
-                          lista_produtos=[produto]))
+            secoes.append(Secao(titulo=produto.categoria, lista_produtos=[produto]))
         else:
             for secao in secoes:
                 if secao.titulo == produto.categoria:
@@ -29,16 +28,13 @@ def index(request):
     if request.session.get('id_usuario', False):
         autenticado = True
         user = get_object_or_404(User, pk=request.session['id_usuario'])
-        print(request.session['id_usuario'])
         lista_favoritos = []
         favoritos = Favorito.objects.order_by('data_adicao')
         for favorito in favoritos:
             if favorito.id_usuario.username == user.username:
-                produto_aux = get_object_or_404(
-                    Produto, pk=favorito.id_produto.pk)
+                produto_aux = get_object_or_404(Produto, pk=favorito.id_produto.pk)
                 lista_favoritos.append(produto_aux)
-        secoes.insert(0, Secao(titulo='Seus favoritos',
-                      lista_produtos=lista_favoritos))
+        secoes.insert(0, Secao(titulo='Seus favoritos', lista_produtos=lista_favoritos))
     context = {'secoes': secoes, 'autenticado': autenticado, 'user': user}
     return render(request, 'loja/index.html', context)
 
@@ -50,7 +46,6 @@ def forum(request):
         titulo = request.POST['titulo']
         reclamacao = request.POST['reclamacao']
     except (KeyError):
-        print('Entra aqui')
         return render(request, 'loja/forum.html', context)
     else:
         nova_reclamacao = Reclamacao(
@@ -75,7 +70,7 @@ def cesta(request):
                 lista_produtos.append(produto_aux)
         context = {'lista_produtos': lista_produtos}
         return render(request, 'loja/cesta.html', context)
-    return render(request, 'cadastro/login.html')
+    return HttpResponseRedirect('/cliente/login/')
 
 
 def cadastro_produto(request, id_produto):
@@ -85,7 +80,7 @@ def cadastro_produto(request, id_produto):
         C = Carrinho(id_produto=produto, id_usuario=user, quantidade=1)
         C.save()
         return HttpResponseRedirect('/cesta')
-    return render(request, 'cadastro/login.html')
+    return HttpResponseRedirect('/cliente/login/')
 
 
 def produto(request, id_produto):
@@ -137,7 +132,7 @@ def historico(request):
 
         context = {"compras": lista_compras}
         return render(request, 'loja/historico.html', context=context)
-    return render(request, 'cadastro/login.html')
+    return HttpResponseRedirect('/cliente/login/')
 
 
 def compras(request):
@@ -161,8 +156,8 @@ def compras(request):
                 id_produto=produto, id_compra=compra)
             compra_produto.save()
         Carrinho.objects.filter(id_usuario=user).delete()
-        return HttpResponseRedirect('/historico')
-    return render(request, 'cadastro/login.html')
+        return HttpResponseRedirect('/historico/')
+    return HttpResponseRedirect('/cliente/login/')
 
 
 def favoritar(request, id_produto):
