@@ -93,6 +93,14 @@ def produto(request, id_produto):
     context = {'produto': produto}
     user_id = request.session.get('id_usuario', None)
     context['user_id'] = user_id
+    estaFavoritado = False
+    if user_id:
+        user = get_object_or_404(User, pk=request.session['id_usuario'])
+        favoritos_usuario = Favorito.objects.filter(id_usuario=user)
+        for favs in favoritos_usuario:
+            if favs.id_produto == produto:
+                estaFavoritado = True
+    context['estaFavoritado'] = estaFavoritado
     return render(request, 'loja/produto.html', context)
 
 
@@ -143,7 +151,10 @@ def compras(request):
                 produto_aux = get_object_or_404(
                     Produto, pk=items.id_produto.pk)
                 lista_produtos.append(produto_aux)
-        compra = Compra(id_usuario=user, total=100000)
+        total_compra = 0.0
+        for prod in lista_produtos:
+            total_compra += float(prod.preco)
+        compra = Compra(id_usuario=user, total=total_compra)
         compra.save()
         for produto in lista_produtos:
             compra_produto = CompraProduto(
@@ -158,9 +169,14 @@ def favoritar(request, id_produto):
     if request.session.get('id_usuario', False):
         user = get_object_or_404(User, pk=request.session['id_usuario'])
         produto = get_object_or_404(Produto, pk=id_produto)
-        favorito = Favorito(id_produto=produto, id_usuario=user)
-        favorito.save()
-        print('Favorita')
+        favoritos_usuario = Favorito.objects.filter(id_usuario=user)
+        for favs in favoritos_usuario:
+            if favs.id_produto == produto:
+                favs.delete()
+                break
+        else:
+            favorito = Favorito(id_produto=produto, id_usuario=user)
+            favorito.save()
         return HttpResponseRedirect('/produto/' + str(id_produto))
     else:
         print('Não Favorita')

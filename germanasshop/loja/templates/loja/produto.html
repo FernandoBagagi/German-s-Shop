@@ -21,14 +21,26 @@
         }
     </script> -->
     {% if user_id %}
-    <script>
-        function favoritar() {
-            var oReq = new XMLHttpRequest();
-            oReq.open("get", "/favoritar/{{produto.pk}}", true);
-            oReq.send();
-            alert('Produto favoritado!')
-        }
-    </script>
+    
+        {% if estaFavoritado %}
+            <script>
+                function favoritar() {
+                    var oReq = new XMLHttpRequest();
+                    oReq.open("get", "/favoritar/{{produto.pk}}", true);
+                    oReq.send();
+                    alert('O produto foi desfavoritado!')
+                }
+            </script>
+        {% else %}
+        <script>
+            function favoritar() {
+                var oReq = new XMLHttpRequest();
+                oReq.open("get", "/favoritar/{{produto.pk}}", true);
+                oReq.send();
+                alert('O produto foi favoritado!')
+            }
+        </script>
+        {% endif %}
     {% else %}
     <script>
         function favoritar() {
@@ -50,7 +62,12 @@
                                 <img id="img_fav"
                                     src="https://images.vexels.com/media/users/3/201001/isolated/lists/fff908e201cc5de6052984723b33b093-balao-de-coracao-em-conversa.png">
                                 <p id="Fav">
-                                    Favoritar</p>
+                                    {% if estaFavoritado %}
+                                    Desfavoritar
+                                    {% else %}
+                                    Favoritar
+                                    {% endif %}
+                                </p>
                             </div>
                         </button>
                     </div>
