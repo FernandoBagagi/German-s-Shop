@@ -11,7 +11,7 @@ class Produto(models.Model):
     categoria = models.CharField('Categoria', max_length=50)
 
     def __str__(self):
-        return str(self.pk)# + ' ' + self.nome
+        return str(self.pk)
 
 class Reclamacao(models.Model):
     titulo = models.CharField('Título', max_length=100)
@@ -27,6 +27,9 @@ class Carrinho(models.Model):
     id_produto = models.ForeignKey(Produto, on_delete = models.CASCADE)
     id_usuario = models.ForeignKey(User, on_delete =  models.CASCADE)
     quantidade = models.CharField('Quantidade',max_length=100)
+
+    def __str__(self):
+        return str(self.id_produto) + ' ' + str(self.id_usuario) + ' ' + str(self.quantidade)
 
 class Favorito(models.Model):
     id_usuario = models.ForeignKey(User, on_delete = models.CASCADE)

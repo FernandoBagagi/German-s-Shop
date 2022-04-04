@@ -1,10 +1,8 @@
-from audioop import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
-from matplotlib.style import context
 from .models import Carrinho, Compra, CompraProduto, Favorito, Produto, Reclamacao
 from django.contrib.auth.models import User
-
+import requests
 
 class Secao:
     def __init__(self, titulo, lista_produtos=[]):
@@ -96,6 +94,10 @@ def produto(request, id_produto):
             if favs.id_produto == produto:
                 estaFavoritado = True
     context['estaFavoritado'] = estaFavoritado
+    response = requests.get('http://economia.awesomeapi.com.br/json/last/USD-BRL')
+    cotacao = (float(response.json()['USD']['high']) + float(response.json()['USD']['low'])) / 2.0
+    preco_dolar = float(produto.preco) / cotacao
+    context['preco_dolar'] = format(preco_dolar,'.2f')
     return render(request, 'loja/produto.html', context)
 
 

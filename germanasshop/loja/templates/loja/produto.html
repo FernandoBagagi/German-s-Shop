@@ -91,8 +91,10 @@
 
         <div id="h5">
             <div id="h4">
-                <p id="produto_preco">R$
-                    {{produto.preco}}</p>
+                <p id="produto_label">Preço em dólar (original)</p>
+                <p id="produto_preco">U$ {{preco_dolar}}</p>
+                <p id="produto_label">Preço em real (convertido)</p>
+                <p id="produto_preco">R$ {{produto.preco}}</p>
                 <a href="cadastrar/">
                     <input id="botao" type="submit" value="Adicionar ao carrinho">
                 </a>

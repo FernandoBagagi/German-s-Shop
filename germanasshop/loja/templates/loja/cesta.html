@@ -52,7 +52,7 @@
                 <div id="resumo">
                     <div id="price_container">
                         <h1 >Valor total</h1>
-                        <h2 id="total_price">aaa</h2>
+                        <h2 id="total_price"></h2>
                     </div>
                     <div class="button_container">
                         <button onclick=irParaHistorico() id="comprar">Comprar</button>
@@ -104,7 +104,7 @@
             sum_preco += parseInt(precos[i].outerText.replace('R$',''))
 
         }
-       document.getElementById('total_price').textContent = sum_preco + ' R$'
+       document.getElementById('total_price').textContent = 'R$ ' + sum_preco
     </script>
 
 </html>
