@@ -1,11 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.conf import settings
 from audioop import reverse
 from django.http import HttpResponseRedirect    
 from django.core.mail import send_mail
-from django.http import HttpResponse
+import random
 
 def cadastro(request):
     if request.method == 'POST':
@@ -43,18 +43,29 @@ def login(request):
     return render(request, 'cadastro/login.html')
 
 
-def enviar_email(request):
-    email = request.POST.getlist('email')
-    send_mail(
-            subject='Recuperação de senha',
-            message='ola',   #aqui deve ser passado a senha a ser recuperada 
-            from_email=settings.EMAIL_HOST_USER,
-            recipient_list=email
-        )
-    return HttpResponseRedirect('/')
-
-
 def recuperar_senha(request):
+    if request.method == 'POST':
+        try:
+            nome = request.POST['nome']
+            email = request.POST['email']
+        except (KeyError):
+            return HttpResponseRedirect('/cliente/erro')
+        else:
+            user = get_object_or_404(User, username=nome)
+            if user:
+                if user.email == email:
+                    nova_senha = str(random.randrange(100000,999999))
+                    mensagem = 'Olá, você optou por recuperar sua senha. Sua nova senha é ' + nova_senha + '.'
+                    send_mail(
+                        subject='Recuperação de senha',
+                        message=mensagem,
+                        from_email=settings.EMAIL_HOST_USER,
+                        recipient_list=[email]
+                    )
+                    user.set_password(nova_senha)
+                    user.save()
+                    return HttpResponseRedirect('/cliente/login')
+            return HttpResponseRedirect('/cliente/erro')
     return render(request, 'cadastro/recuperar_senha.html')
 
 def erro(request):
