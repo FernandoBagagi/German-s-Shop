@@ -12,58 +12,75 @@
         @import url('https://fonts.googleapis.com/css2?family=Dosis:wght@200&display=swap');
     </style>
     <title>{{produto.nome}}</title>
+    <!-- <script>
+        function favoritar() {
+            var oReq = new XMLHttpRequest();
+            oReq.open("get", "/favoritar/{{produto.pk}}", true);
+            oReq.send();
+            alert('Produto favoritado!')
+        }
+    </script> -->
+    {% if user_id %}
     <script>
-        function favoritar(){
+        function favoritar() {
             var oReq = new XMLHttpRequest();
             oReq.open("get", "/favoritar/{{produto.pk}}", true);
             oReq.send();
             alert('Produto favoritado!')
         }
     </script>
+    {% else %}
+    <script>
+        function favoritar() {
+            alert('Faça antes o login para favoritar este produto!');
+        }
+    </script>
+    {% endif %}
 </head>
 
 <body>
     {% include 'loja/navbar.html' %}
-    <div id ="h1">
-        <div id ="h1">
+    <div id="h1">
+        <div id="h1">
             <div id="h1">
-            <div id="h2">
-                <div >
-                    <button onclick=favoritar()>
-                        <div style="display:flex; justify-content:center; align-items:center">
-                            <img id= "img_fav" src="https://images.vexels.com/media/users/3/201001/isolated/lists/fff908e201cc5de6052984723b33b093-balao-de-coracao-em-conversa.png" >
-                            <p id="Fav">
-                                Favoritar</p>
-                        </div>    
-                    </button>
-                </div>
+                <div id="h2">
+                    <div>
+                        <button onclick=favoritar() id="botao-favoritar">
+                            <div>
+                                <img id="img_fav"
+                                    src="https://images.vexels.com/media/users/3/201001/isolated/lists/fff908e201cc5de6052984723b33b093-balao-de-coracao-em-conversa.png">
+                                <p id="Fav">
+                                    Favoritar</p>
+                            </div>
+                        </button>
+                    </div>
 
-                <div id="h6">
-                <img id="img_produto" src= {{produto.url_imagem}} >
-                 </div>
-            </div>
-            <div id="h3">
-                <p id="descricao_nome">
-                    {{produto.nome}}
-                </p>
-                <p id="descricao_produto">
-                    {{ produto.descricao }}    
-                </p>
+                    <div id="h6">
+                        <img id="img_produto" src={{produto.url_imagem}}>
+                    </div>
+                </div>
+                <div id="h3">
+                    <p id="descricao_nome">
+                        {{produto.nome}}
+                    </p>
+                    <p id="descricao_produto">
+                        {{ produto.descricao }}
+                    </p>
+                </div>
             </div>
         </div>
-</div>
         <div style="width: 250px;">
         </div>
-        
+
         <div id="h5">
-        <div id="h4">
-            <p id="produto_preco" >R$
-                {{produto.preco}}</p>
+            <div id="h4">
+                <p id="produto_preco">R$
+                    {{produto.preco}}</p>
                 <a href="cadastrar/">
-                    <input id="botao" type="submit" value="Adicionar ao carrinho" >
+                    <input id="botao" type="submit" value="Adicionar ao carrinho">
                 </a>
+            </div>
         </div>
-    </div>
     </div>
 
 </body>
