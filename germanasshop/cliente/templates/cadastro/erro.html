@@ -4,9 +4,17 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/erro.css' %}">
+    <title>Erro :/</title>
 </head>
 <body>
-    ERRO!!!
+    <container>
+        <img src="https://cdn-icons-png.flaticon.com/512/5741/5741824.png">
+        <div>
+           <p>Algo saiu errado! Tente novamente!</p>
+           <p class="textinho">Deseja voltar para a tela inicial? <a href="{% url 'loja:inicio' %}">Voltar</a></p>
+        </div>
+    </container>
 </body>
 </html>

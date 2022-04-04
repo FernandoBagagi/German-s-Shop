@@ -15,7 +15,7 @@ def cadastro(request):
             senha = request.POST['senha']
             confirmar = request.POST['confirmar']
         except (KeyError):
-            return render(request, 'cadastro/erro.html')
+            return HttpResponseRedirect('/cliente/erro')
         else:
             if(nome != '' and email != ''):
                 if(senha == confirmar):
@@ -23,8 +23,8 @@ def cadastro(request):
                     user.save()
                     print(nome, email, senha)
                     return HttpResponseRedirect('/cliente/login')
-                return render(request, 'cadastro/erro.html')
-            return render(request, 'cadastro/erro.html')
+                return HttpResponseRedirect('/clienteo/erro')
+            return HttpResponseRedirect('/cliente/erro')
     return render(request, 'cadastro/cadastro.html')
     
 def login(request):
@@ -39,7 +39,7 @@ def login(request):
             if user:
                 request.session['id_usuario'] = user.id
                 return HttpResponseRedirect('/')
-            return render(request, 'cadastro/erro.html')
+            return HttpResponseRedirect('/cliente/erro')
     return render(request, 'cadastro/login.html')
 
 
@@ -56,3 +56,6 @@ def enviar_email(request):
 
 def recuperar_senha(request):
     return render(request, 'cadastro/recuperar_senha.html')
+
+def erro(request):
+     return render(request, 'cadastro/erro.html')
