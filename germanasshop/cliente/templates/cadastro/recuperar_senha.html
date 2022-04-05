@@ -16,8 +16,12 @@
         <img id="logo" src="{% static 'img/logo-login.png' %}" alt="">
         <h1 class="titulo">Recuperar senha</h1>
         <div class="formulario">
-            <form method="POST" action="{% url 'cliente:enviar_email' %}">
+            <form method="POST" action="{% url 'cliente:recuperar_senha' %}">
                 {% csrf_token %}
+                <div class="campo-formulario">
+                    <label>Nome do usuário</label>
+                    <input type="text" required="true" name="nome" id="nome" placeholder="Digite seu nome">
+                </div>
                 <div class="campo-formulario">
                     <label>E-mail</label>
                     <input type="email" required="true" name="email" id="email" placeholder="Digite seu e-mail">

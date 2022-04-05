@@ -1,12 +1,26 @@
 body{
     margin: 0%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 10px;
 }
-h1{
-    color: #484848;
+
+.compra_antiga{
+    height: auto;
+    width: 96%;
+    margin-top: 10px;
+    border-radius: 10px;
+    background-color: #dfdfdf;
 }
-h2{
-    font-size: 18px;
-    font-weight: 600;
+
+.titular{
+    border-radius: 10px 10px 0px 0px;
+    height: auto;
+    width: 100%;
+    background-color: #FFC8CA;
+    display: flex;
 }
 
 hr{
@@ -28,23 +42,6 @@ hr{
     margin: 100px;
 }
 
-.compra_antiga{
-    height: auto;
-    width: 90%;
-    margin-top: 10px;
-    border-radius: 10px;
-    background-color: #adadad;
-}
-
-.titular{
-    border-radius: 10px 10px 0px 0px;
-    height: auto;
-    width: 90%;
-    background-color: #FFC8CA;
-    display: flex;
-}
-
-
 .lista_produtos{
     
     border-radius: 0px 0px 10px 10px;
@@ -59,10 +56,18 @@ hr{
     margin-right: 10px;
     margin-top: -10px;
     text-align: center;
-    white-space: nowrap
+    white-space: nowrap;
+    display: flex;
+    flex-direction: row;
 }
-#n_pedido{
-    margin-left: 72%;
+
+h1{
+    color: #484848;
+}
+h2{
+    font-size: 18px;
+    font-weight: 600;
+    margin-left: 10px;
 }
 
 .produto{
@@ -81,3 +86,4 @@ hr{
     font-size: 20px;
     font-weight: 700;
 }
+
