@@ -17,7 +17,7 @@ class Produto(models.Model):
 
 class Reclamacao(models.Model):
     titulo = models.CharField('Título', max_length=100)
-    reclamação = models.TextField('Reclamação')
+    reclamacao = models.TextField('Reclamação')
     resposta = models.TextField('Resposta', null=True)
     data_pergunta = models.DateTimeField('Data Pergunta', default=datetime.now())
     data_resposta = models.DateTimeField('Data Resposta', null=True)
