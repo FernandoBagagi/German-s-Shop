@@ -42,7 +42,7 @@ def forum(request):
         except (KeyError):
             return HttpResponseRedirect('/clienteo/erro')
         else:
-            nova_reclamacao = Reclamacao(titulo=titulo, reclamação=reclamacao, resposta=None, data_resposta=None)
+            nova_reclamacao = Reclamacao(titulo=titulo, reclamacao=reclamacao, resposta=None, data_resposta=None)
             nova_reclamacao.save()
     reclamacoes = Reclamacao.objects.order_by('data_pergunta').reverse()    
     context = {'reclamacoes': reclamacoes}
