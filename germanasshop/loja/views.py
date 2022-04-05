@@ -21,51 +21,42 @@ def index(request):
             for secao in secoes:
                 if secao.titulo == produto.categoria:
                     secao.lista_produtos.append(produto)
-    autenticado = False
     user = None
     if request.session.get('id_usuario', False):
-        autenticado = True
         user = get_object_or_404(User, pk=request.session['id_usuario'])
         lista_favoritos = []
-        favoritos = Favorito.objects.order_by('data_adicao')
+        favoritos = Favorito.objects.filter(id_usuario=user.pk).order_by('data_adicao').reverse()
         for favorito in favoritos:
-            if favorito.id_usuario.username == user.username:
-                produto_aux = get_object_or_404(Produto, pk=favorito.id_produto.pk)
-                lista_favoritos.append(produto_aux)
+            produto_aux = get_object_or_404(Produto, pk=favorito.id_produto.pk)
+            lista_favoritos.append(produto_aux)
         secoes.insert(0, Secao(titulo='Seus favoritos', lista_produtos=lista_favoritos))
-    context = {'secoes': secoes, 'autenticado': autenticado, 'user': user}
+    context = {'secoes': secoes, 'user': user}
     return render(request, 'loja/index.html', context)
 
 
 def forum(request):
-    reclamacoes = Reclamacao.objects.order_by('data_pergunta').reverse()
+    if request.method == 'POST':
+        try:
+            titulo = request.POST['titulo']
+            reclamacao = request.POST['reclamacao']
+        except (KeyError):
+            return HttpResponseRedirect('/clienteo/erro')
+        else:
+            nova_reclamacao = Reclamacao(titulo=titulo, reclamação=reclamacao, resposta=None, data_resposta=None)
+            nova_reclamacao.save()
+    reclamacoes = Reclamacao.objects.order_by('data_pergunta').reverse()    
     context = {'reclamacoes': reclamacoes}
-    try:
-        titulo = request.POST['titulo']
-        reclamacao = request.POST['reclamacao']
-    except (KeyError):
-        return render(request, 'loja/forum.html', context)
-    else:
-        nova_reclamacao = Reclamacao(
-            titulo=titulo, reclamação=reclamacao, resposta=None, data_resposta=None)
-        print(nova_reclamacao)
-        nova_reclamacao.save()
-        reclamacoes = Reclamacao.objects.order_by('data_pergunta').reverse()
-        context = {'reclamacoes': reclamacoes}
-        return render(request, 'loja/forum.html', context)
+    return render(request, 'loja/forum.html', context)
 
 
 def cesta(request):
     if request.session.get('id_usuario', False):
         user = get_object_or_404(User, pk=request.session['id_usuario'])
-        carrinho = Carrinho.objects.all()
+        carrinho = Carrinho.objects.filter(id_usuario = user.pk)
         lista_produtos = []
-
-        for items in carrinho:
-            if items.id_usuario.username == user.username:
-                produto_aux = get_object_or_404(
-                    Produto, pk=items.id_produto.pk)
-                lista_produtos.append(produto_aux)
+        for item in carrinho:
+            produto = get_object_or_404(Produto, pk=item.id_produto.pk)
+            lista_produtos.append(produto)
         context = {'lista_produtos': lista_produtos}
         return render(request, 'loja/cesta.html', context)
     return HttpResponseRedirect('/cliente/login/')
@@ -75,36 +66,29 @@ def cadastro_produto(request, id_produto):
     if request.session.get('id_usuario', False):
         produto = get_object_or_404(Produto, pk=id_produto)
         user = get_object_or_404(User, pk=request.session['id_usuario'])
-        C = Carrinho(id_produto=produto, id_usuario=user, quantidade=1)
-        C.save()
+        carrinho = Carrinho(id_produto=produto, id_usuario=user, quantidade=1)
+        carrinho.save()
         return HttpResponseRedirect('/cesta')
     return HttpResponseRedirect('/cliente/login/')
 
 
 def produto(request, id_produto):
     produto = get_object_or_404(Produto, pk=id_produto)
-    context = {'produto': produto}
     user_id = request.session.get('id_usuario', None)
-    context['user_id'] = user_id
     estaFavoritado = False
     if user_id:
         user = get_object_or_404(User, pk=request.session['id_usuario'])
         favoritos_usuario = Favorito.objects.filter(id_usuario=user)
-        for favs in favoritos_usuario:
-            if favs.id_produto == produto:
+        for favorito in favoritos_usuario:
+            if favorito.id_produto == produto:
                 estaFavoritado = True
-    context['estaFavoritado'] = estaFavoritado
+    #API Cotação de Moedas
     response = requests.get('http://economia.awesomeapi.com.br/json/last/USD-BRL')
     cotacao = (float(response.json()['USD']['high']) + float(response.json()['USD']['low'])) / 2.0
     preco_dolar = float(produto.preco) / cotacao
-    context['preco_dolar'] = format(preco_dolar,'.2f')
+    preco_dolar = format(preco_dolar,'.2f')
+    context = {'produto': produto, 'user_id' : user_id, 'estaFavoritado' : estaFavoritado, 'preco_dolar': preco_dolar}
     return render(request, 'loja/produto.html', context)
-
-
-def logout(request):
-    if request.session.get('id_usuario', False):
-        del request.session['id_usuario']
-    return HttpResponseRedirect('/')
 
 
 class CompraModel:
@@ -119,20 +103,16 @@ def historico(request):
     if request.session.get('id_usuario', False):
         lista_compras = []
         user = get_object_or_404(User, pk=request.session['id_usuario'])
-        compras = Compra.objects.all()
+        compras = Compra.objects.filter(id_usuario=user.pk).order_by('data').reverse()
         for compra in compras:
-            if compra.id_usuario.username == user.username:
-                CP_list = CompraProduto.objects.all()
-                lista_produtos = []
-                for CP in CP_list:
-                    if CP.id_compra.pk == compra.pk:
-                        produto = get_object_or_404(
-                            Produto, pk=CP.id_produto.pk)
-                        lista_produtos.append(produto)
-                c = CompraModel(pk=compra.pk, total=compra.total, data=compra.data,
-                                lista_produtos=lista_produtos)
-                lista_compras.append(c)
-
+            produtos_compra = CompraProduto.objects.filter(id_compra=compra.pk)
+            ids_produtos = [produto_compra.id_produto for produto_compra in produtos_compra]
+            lista_produtos = []
+            for id_produto in ids_produtos:
+                produto = get_object_or_404(Produto, pk=id_produto.pk)
+                lista_produtos.append(produto)
+            nova_compra = CompraModel(pk=compra.pk, total=compra.total, data=compra.data,lista_produtos=lista_produtos)
+            lista_compras.append(nova_compra)
         context = {"compras": lista_compras}
         return render(request, 'loja/historico.html', context=context)
     return HttpResponseRedirect('/cliente/login/')
@@ -141,24 +121,21 @@ def historico(request):
 def compras(request):
     if request.session.get('id_usuario', False):
         user = get_object_or_404(User, pk=request.session['id_usuario'])
-        carrinho = Carrinho.objects.all()
+        carrinho = Carrinho.objects.filter(id_usuario = user.pk)
+        ids_produtos = [produto_compra.id_produto for produto_compra in carrinho]
         lista_produtos = []
-
-        for items in carrinho:
-            if items.id_usuario.username == user.username:
-                produto_aux = get_object_or_404(
-                    Produto, pk=items.id_produto.pk)
-                lista_produtos.append(produto_aux)
+        for id_produto in ids_produtos:
+            produto = get_object_or_404(Produto, pk=id_produto.pk)
+            lista_produtos.append(produto)
         total_compra = 0.0
-        for prod in lista_produtos:
-            total_compra += float(prod.preco)
+        for produto in lista_produtos:
+            total_compra += float(produto.preco)
         compra = Compra(id_usuario=user, total=total_compra)
         compra.save()
         for produto in lista_produtos:
-            compra_produto = CompraProduto(
-                id_produto=produto, id_compra=compra)
+            compra_produto = CompraProduto(id_produto=produto, id_compra=compra)
             compra_produto.save()
-        Carrinho.objects.filter(id_usuario=user).delete()
+        carrinho.delete()
         return HttpResponseRedirect('/historico/')
     return HttpResponseRedirect('/cliente/login/')
 
@@ -168,23 +145,23 @@ def favoritar(request, id_produto):
         user = get_object_or_404(User, pk=request.session['id_usuario'])
         produto = get_object_or_404(Produto, pk=id_produto)
         favoritos_usuario = Favorito.objects.filter(id_usuario=user)
-        for favs in favoritos_usuario:
-            if favs.id_produto == produto:
-                favs.delete()
+        for favoritos in favoritos_usuario:
+            if favoritos.id_produto == produto:
+                favoritos.delete()
                 break
         else:
             favorito = Favorito(id_produto=produto, id_usuario=user)
             favorito.save()
         return HttpResponseRedirect('/produto/' + str(id_produto))
     else:
-        print('Não Favorita')
         return HttpResponseRedirect('/cliente/login/')
 
 
 def produto_json(request):
-    data = list(Produto.objects.values())  # wrap in list(), because QuerySet is not JSON serializable
+    data = {'produtos':list(Produto.objects.values())}
     return JsonResponse(data, safe=False)
-    
+
+
 def produto_json_by_id(request, id_produto):
-    data = list(Produto.objects.filter(pk=id_produto).values())  # wrap in list(), because QuerySet is not JSON serializable
+    data = {'produto':list(Produto.objects.filter(pk=id_produto).values())}
     return JsonResponse(data, safe=False)

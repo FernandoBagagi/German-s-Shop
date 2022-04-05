@@ -17,17 +17,16 @@
     
     <div style="height:30px; display: flex; justify-content: end; align-items: flex-end; background-color: #FFC8CA; border-radius: 0px 0px 10px 10px;">
         <p style="font-family: 'Dosis', sans-serif; font-size: 20px; line-height: 10px; padding-right: 30px; color: #000000;">
-            {% if autenticado %}
-                Seja bem-vindo(a) {{user.username}} <a style="font-family: 'Dosis', sans-serif; font-size: 20px; line-height: 10px; color: #F9595F;" href="{% url 'loja:logout' %}">SAIR</a>
+            {% if user %}
+                Seja bem-vindo(a) {{user.username}} <a style="font-family: 'Dosis', sans-serif; font-size: 20px; line-height: 10px; color: #F9595F;" href="{% url 'cliente:logout' %}">SAIR</a>
             {% else %}
                 Não está logado
             {% endif %}
         </p>
-        
-        
     </div>
        
     <img id="destaque" src="https://images-submarino.b2w.io/spacey/suba/2022/03/18/cupomdodia_home_destaque_desk_100NOAPP-daa4033a98f7.png" alt="">
+    
     {% for secao in secoes%}
     <div class="secao">
         <h1 class="titulo-secao">{{secao.titulo}}</h1>

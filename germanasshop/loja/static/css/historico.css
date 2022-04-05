@@ -63,8 +63,10 @@ hr{
 
 h1{
     color: #484848;
+    font-family: 'Dosis', sans-serif;
 }
 h2{
+    font-family: 'Dosis', sans-serif;
     font-size: 18px;
     font-weight: 600;
     margin-left: 10px;
@@ -79,7 +81,8 @@ h2{
     max-height: 100px;
 }
 
-.produto a{
+.produto p{
+    font-family: 'Dosis', sans-serif;
     padding: 2%;
     text-decoration: none;
     color: black;
