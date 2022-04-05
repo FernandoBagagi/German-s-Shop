@@ -12,16 +12,7 @@
         @import url('https://fonts.googleapis.com/css2?family=Dosis:wght@200&display=swap');
     </style>
     <title>{{produto.nome}}</title>
-    <!-- <script>
-        function favoritar() {
-            var oReq = new XMLHttpRequest();
-            oReq.open("get", "/favoritar/{{produto.pk}}", true);
-            oReq.send();
-            alert('Produto favoritado!')
-        }
-    </script> -->
     {% if user_id %}
-    
         {% if estaFavoritado %}
             <script>
                 function favoritar() {
@@ -63,9 +54,9 @@
                                     src="https://images.vexels.com/media/users/3/201001/isolated/lists/fff908e201cc5de6052984723b33b093-balao-de-coracao-em-conversa.png">
                                 <p id="Fav">
                                     {% if estaFavoritado %}
-                                    Desfavoritar
+                                        Desfavoritar
                                     {% else %}
-                                    Favoritar
+                                        Favoritar
                                     {% endif %}
                                 </p>
                             </div>

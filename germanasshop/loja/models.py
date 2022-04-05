@@ -3,6 +3,7 @@ from functools import total_ordering
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class Produto(models.Model):
     nome = models.CharField('Nome', max_length=100)
     preco = models.DecimalField('Preço', max_digits=7, decimal_places=2)
@@ -12,6 +13,7 @@ class Produto(models.Model):
 
     def __str__(self):
         return str(self.pk)
+
 
 class Reclamacao(models.Model):
     titulo = models.CharField('Título', max_length=100)
@@ -23,6 +25,7 @@ class Reclamacao(models.Model):
     def __str__(self):
         return str(self.pk) + ' ' + self.titulo
 
+
 class Carrinho(models.Model):
     id_produto = models.ForeignKey(Produto, on_delete = models.CASCADE)
     id_usuario = models.ForeignKey(User, on_delete =  models.CASCADE)
@@ -31,13 +34,15 @@ class Carrinho(models.Model):
     def __str__(self):
         return str(self.id_produto) + ' ' + str(self.id_usuario) + ' ' + str(self.quantidade)
 
+
 class Favorito(models.Model):
     id_usuario = models.ForeignKey(User, on_delete = models.CASCADE)
     id_produto = models.ForeignKey(Produto, on_delete = models.CASCADE)
     data_adicao = models.DateTimeField('Data da Adição na lista',default=datetime.now())
-    #Como juntar as duas chaves pra não haver repetição
+    
     def __str__(self):
         return str(self.id_usuario) + ' favoritou ' + str(self.id_produto)
+
 
 class Compra(models.Model):
     id_usuario = models.ForeignKey(User, on_delete = models.CASCADE)
@@ -46,6 +51,7 @@ class Compra(models.Model):
 
     def __str__(self):
         return str(self.pk)
+
 
 class CompraProduto(models.Model):
     id_produto = models.ForeignKey(Produto, on_delete = models.CASCADE)

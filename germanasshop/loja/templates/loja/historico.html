@@ -34,7 +34,7 @@
                     {% for produto in compra.lista_produtos%}
                     <div class="produto">
                         <img src={{ produto.url_imagem }} alt="">
-                        <a href="produto/{{  produto.pk  }}/">{{produto.nome}}</a>
+                        <p>{{produto.nome}}</p>
                     </div>
                     <hr>
                     {% endfor %}

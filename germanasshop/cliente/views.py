@@ -21,12 +21,12 @@ def cadastro(request):
                 if(senha == confirmar):
                     user = User.objects.create_user(nome, email=email, password=senha)
                     user.save()
-                    print(nome, email, senha)
                     return HttpResponseRedirect('/cliente/login')
                 return HttpResponseRedirect('/clienteo/erro')
             return HttpResponseRedirect('/cliente/erro')
     return render(request, 'cadastro/cadastro.html')
-    
+
+
 def login(request):
     if request.method == 'POST':
         try:
@@ -67,6 +67,13 @@ def recuperar_senha(request):
                     return HttpResponseRedirect('/cliente/login')
             return HttpResponseRedirect('/cliente/erro')
     return render(request, 'cadastro/recuperar_senha.html')
+
+
+def logout(request):
+    if request.session.get('id_usuario', False):
+        del request.session['id_usuario']
+    return HttpResponseRedirect('/')
+
 
 def erro(request):
      return render(request, 'cadastro/erro.html')

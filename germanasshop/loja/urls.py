@@ -13,5 +13,4 @@ urlpatterns = [
     path('historico/', views.historico, name='historico'),
     path('comprar/', views.compras,name='comprar'),
     path('favoritar/<int:id_produto>', views.favoritar,name='favoritar'),
-    path('logout/', views.logout, name='logout'),
 ]
