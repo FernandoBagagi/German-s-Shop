@@ -44,6 +44,9 @@ class Compra(models.Model):
     data = models.DateTimeField("Data da compra", default= datetime.now())
     total = models.DecimalField('Total', max_digits=9, decimal_places=2)
 
+    def __str__(self):
+        return str(self.pk)
+
 class CompraProduto(models.Model):
     id_produto = models.ForeignKey(Produto, on_delete = models.CASCADE)
     id_compra = models.ForeignKey(Compra, on_delete = models.CASCADE)

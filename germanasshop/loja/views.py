@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from .models import Carrinho, Compra, CompraProduto, Favorito, Produto, Reclamacao
 from django.contrib.auth.models import User
@@ -108,7 +108,8 @@ def logout(request):
 
 
 class CompraModel:
-    def __init__(self, total, data, lista_produtos):
+    def __init__(self, pk, total, data, lista_produtos):
+        self.pk = pk
         self.total = total
         self.data = data
         self.lista_produtos = lista_produtos
@@ -128,7 +129,7 @@ def historico(request):
                         produto = get_object_or_404(
                             Produto, pk=CP.id_produto.pk)
                         lista_produtos.append(produto)
-                c = CompraModel(total=compra.total, data=compra.data,
+                c = CompraModel(pk=compra.pk, total=compra.total, data=compra.data,
                                 lista_produtos=lista_produtos)
                 lista_compras.append(c)
 
@@ -178,3 +179,12 @@ def favoritar(request, id_produto):
     else:
         print('Não Favorita')
         return HttpResponseRedirect('/cliente/login/')
+
+
+def produto_json(request):
+    data = list(Produto.objects.values())  # wrap in list(), because QuerySet is not JSON serializable
+    return JsonResponse(data, safe=False)
+    
+def produto_json_by_id(request, id_produto):
+    data = list(Produto.objects.filter(pk=id_produto).values())  # wrap in list(), because QuerySet is not JSON serializable
+    return JsonResponse(data, safe=False)
