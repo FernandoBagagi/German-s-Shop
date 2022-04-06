@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-4xy1lb@x#&7opm%ha0+w!&old+kcq40&t^3-2^mrj4hemt4w5c
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['blooming-tundra-55642.herokuapp.com']
 
 # Application definition
 
